@@ -1,0 +1,14 @@
+SYN_SOURCE_FILES = \
+../../src/adcintf.vhd \
+../../src/bclk.vhd \
+../../src/dacintf.vhd \
+../../src/fsgen.vhd \
+../../src/i2c_sub.vhd \
+../../src/i2c.vhd \
+../../src/i2c_write.vhd \
+../../src/mclk.vhd \
+../../src/memory.vhd \
+../../src/ringbuf.vhd \
+../../src/audio.vhd \
+../../src/de1_audio.vhd
+
