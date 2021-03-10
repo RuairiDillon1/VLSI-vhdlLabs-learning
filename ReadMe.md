@@ -13,7 +13,7 @@ It addresses the topics
 
 The DE1-Prototype Board serves as a platform for rapid prototyping of digital systems:
 
-![DE1 Prototype Board ](images/de1-prototypeboard.png){width=50%}
+![DE1 Prototype Board ](doc/images/de1-prototypeboard.png){width=50%}
 
 
 
