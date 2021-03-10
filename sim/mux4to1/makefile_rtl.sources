@@ -1,0 +1,18 @@
+## ----------------------------------------------------------------------------
+## Script     : makefile.sources
+## ----------------------------------------------------------------------------
+## Author     : Johann Faerber
+## Company    : University of Applied Sciences Augsburg
+## ----------------------------------------------------------------------------
+## Description: provide all the VHDL source files in the variable SYN_SOURCE_FILES
+##              Attention !!!
+##              -------------
+##              Do not forget a new line after the final source file !
+## ----------------------------------------------------------------------------
+
+SYN_SOURCE_FILES = \
+../../src/e_mux4to1.vhd \
+../../src/a_mux4to1_rtl.vhd \
+
+# do not delete this line
+# -----------------------------------------------------------------------------

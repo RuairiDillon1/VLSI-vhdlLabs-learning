@@ -1,0 +1,20 @@
+## ----------------------------------------------------------------------------
+## Script     : makefile.sources
+## ----------------------------------------------------------------------------
+## Author     : Johann Faerber
+## Company    : University of Applied Sciences Augsburg
+## ----------------------------------------------------------------------------
+## Description: provide all the VHDL source files in the variable SYN_SOURCE_FILES
+##              Attention !!!
+##              -------------
+##              Do not forget a new line after the final source file !
+## ----------------------------------------------------------------------------
+
+SYN_SOURCE_FILES = \
+../../src/and2gate_equation.vhd \
+../../src/or2gate_equation.vhd \
+../../src/invgate_equation.vhd \
+../../src/mux2to1_structure_errors.vhd \
+
+# do not delete this line
+# -----------------------------------------------------------------------------
