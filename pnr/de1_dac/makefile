@@ -9,4 +9,6 @@ PROGFILEEXT = sof
 
 include ../makefile
 
-
+# Use the specific sdc file
+$(PROJECT).sdc: de1_dac_special.sdc
+	ln -s de1_dac_special.sdc de1_dac.sdc

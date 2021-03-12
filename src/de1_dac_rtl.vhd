@@ -2,6 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+-- PLL for 100 MHz speed
+library altera_mf;
+use altera_mf.all;
+
 entity de1_dac is 
   port ( CLOCK_50 : in  std_ulogic;         
          SW       : in  std_ulogic_vector(9 downto 0); 
@@ -23,6 +27,31 @@ end entity;
 
 architecture rtl of de1_dac is
 
+  -- Altera PLL
+  component altpll
+    generic (
+      clk0_divide_by         : natural;
+      clk0_duty_cycle        : natural;
+      clk0_multiply_by       : natural;
+--              clk0_phase_shift                : STRING;
+--              compensate_clock                : STRING;
+      inclk0_input_frequency : natural;
+--              intended_device_family          : STRING;
+--              lpm_hint                : STRING;
+--              lpm_type                : STRING;
+      operation_mode         : string;
+      port_inclk0            : string;
+      port_clk0              : string
+      );
+    port (
+      clk   : out std_logic_vector (5 downto 0);
+      inclk : in  std_logic_vector (1 downto 0)
+      );
+  end component;
+
+  signal pll_inclk : std_logic_vector(1 downto 0);
+  signal pll_outclk : std_logic_vector(5 downto 0);
+
   signal clk,rst_n : std_ulogic;
   signal cnt : unsigned(13 downto 0);
   signal phase_inc : unsigned(9 downto 0);
@@ -30,8 +59,28 @@ architecture rtl of de1_dac is
   
 begin
 
-  clk <= CLOCK_50;
-  rst_n <= KEY0;
+  pll_i0 : altpll
+    generic map (
+      clk0_divide_by         => 1,
+      clk0_duty_cycle        => 50,
+      clk0_multiply_by       => 2,
+--              clk0_phase_shift => "0",
+--              compensate_clock => "CLK0",
+      inclk0_input_frequency => 20000,
+      operation_mode         => "NORMAL",
+      port_inclk0            => "PORT_USED",
+      port_clk0              => "PORT_USED"
+      )
+    port map (
+      inclk => pll_inclk,
+      clk   => pll_outclk
+      );
+
+  pll_inclk(0) <= CLOCK_50;
+  pll_inclk(1) <= '0';
+
+  clk <= pll_outclk(0);
+  rst_n <= '0' when KEY0 = '0' else '1' when rising_edge (clk);
   LEDR <= SW;
   
   DAC_MODE  <= '1'; --dual port
@@ -40,7 +89,7 @@ begin
   DAC_WRT_A <= clk;
   DAC_WRT_B <= clk;
 
-  phase_inc <= unsigned(SW);
+  phase_inc <= unsigned(SW(9 downto 1) & '0');
 
   cnt <= (others => '0') when rst_n = '0' else cnt+phase_inc when rising_edge(clk);
 
