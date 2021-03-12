@@ -22,7 +22,7 @@ use altera.altera_primitives_components.all;
 
 entity de1_audio is 
   port (
-    CLOCK_24:   in std_ulogic;
+    CLOCK_50:   in std_ulogic;
     KEY0:       in std_ulogic;
     I2C_SCLK:   out std_ulogic;
     I2C_SDAT:   inout std_logic; 
@@ -78,7 +78,7 @@ architecture struct of de1_audio is
 begin
   
   reset_n <= KEY0;
-  clk     <= CLOCK_24;
+  clk     <= CLOCK_50;
 
   audio_i0 : audio
     port map (

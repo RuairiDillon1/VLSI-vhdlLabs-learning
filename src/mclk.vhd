@@ -18,7 +18,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 -- Master Clock Generator
--- Generate 12 MHz from 24 MHz
+-- Generate 12.5 MHz from 50 MHz by dividing by 4
+-- Audio Codec expects 12.288 MHz, so we are slightly higher
 
 entity mclk is 
   port (
@@ -28,19 +29,19 @@ entity mclk is
 end; 
 
 architecture rtl of mclk is
-  signal mclk : std_ulogic;
+  signal mclk : unsigned(1 downto 0);
 begin
 
   mclk_p : process(clk_i, reset_ni)
   begin
     if reset_ni = '0' then
-      mclk <= '0'; 
+      mclk <= to_unsigned(0, mclk'length);
     elsif rising_edge(clk_i) then
-      mclk <= not mclk;
+      mclk <= mclk + 1;
     end if;
   end process mclk_p;
 
-  mclk_o <= mclk;
+  mclk_o <= mclk(1);
 			   
 end; -- architecture
 

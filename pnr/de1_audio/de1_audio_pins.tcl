@@ -1,5 +1,5 @@
-# Pin Configuration 
-set_location_assignment PIN_B12 -to CLOCK_24
+# Pin Configuration
+set_location_assignment PIN_L1  -to CLOCK_50
 set_location_assignment PIN_R22 -to KEY0 
 set_location_assignment PIN_A3  -to I2C_SCLK   
 set_location_assignment PIN_B3  -to I2C_SDAT   

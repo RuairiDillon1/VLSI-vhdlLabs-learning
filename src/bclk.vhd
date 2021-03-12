@@ -28,7 +28,8 @@ entity bclk is
 end; 
 
 architecture rtl of bclk is
-  signal clk_counter          : integer range 0 to 47;
+  constant max_count : integer := 7;
+  signal clk_counter          : integer range 0 to max_count;
   signal bclk_rising_edge_en  : std_ulogic; 
   signal bclk_falling_edge_en : std_ulogic;  
 begin
@@ -38,7 +39,7 @@ begin
     if reset_ni = '0' then
       clk_counter <= 0; 
     elsif rising_edge(clk_i) then
-      if clk_counter = 47 then 
+      if clk_counter = max_count then
         clk_counter <= 0;
       else
         clk_counter <= clk_counter + 1; 
@@ -50,10 +51,10 @@ begin
   begin
     bclk_rising_edge_en  <= '0';
     bclk_falling_edge_en <= '0'; 
-    if clk_counter = 47 then
+    if clk_counter = max_count then
       bclk_rising_edge_en <= '1';
     end if; 
-    if clk_counter = 23 then 
+    if clk_counter = max_count / 2 then
       bclk_falling_edge_en <= '1';
     end if;      
   end process edge_comb_p;

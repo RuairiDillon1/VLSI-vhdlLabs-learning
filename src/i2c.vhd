@@ -44,7 +44,7 @@ end;
 architecture rtl of i2c is
 
   -- Clock divider section 
-  constant fd_c : integer := 24000000/20000/2; -- 24 MHz system clock, 20 kHz I2C clock   
+  constant fd_c : integer := 50000000/20000/2; -- 50 MHz system clock, 20 kHz I2C clock
   signal clk_cnt : integer range 0 to fd_c; 
   signal clk_cnt_reset, clk_cnt_done : std_ulogic;
   

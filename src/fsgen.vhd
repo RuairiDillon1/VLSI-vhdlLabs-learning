@@ -29,7 +29,8 @@ entity fsgen is
 end; 
 
 architecture rtl of fsgen is
-  signal counter          : integer range 0 to 63;
+  constant max_count : integer := 127;
+  signal counter     : integer range 0 to max_count;
 begin
 
   fs_cnt_p : process(clk_i, reset_ni)
@@ -40,7 +41,7 @@ begin
     elsif rising_edge(clk_i) then
       if bclk_falling_edge_en_i = '1' then
         fs_o <= '0';  
-        if counter = 63 then 
+        if counter = max_count then
           counter <= 0;
           fs_o <= '1'; 
         else

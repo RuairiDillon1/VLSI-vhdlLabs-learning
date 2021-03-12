@@ -45,7 +45,7 @@ architecture rtl of i2c_write is
     X"340A00", -- Digital path control
     X"340C61", -- Power Down Control (Everything switched on)
     X"340E13", -- Digital Audio Interface Format (Slave Mode, DSP Mode, 16 Bit)
-    X"34100C", -- Sampling Control (8 kHz Sampling frequency, 12.288 MHz MCLK frequency)
+    X"341000", -- Sampling Control (48 kHz Sampling frequency, Normal Mode)
     X"341201"); -- Active Control (Activate) 
    
 begin
