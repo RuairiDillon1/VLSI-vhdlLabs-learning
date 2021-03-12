@@ -8,3 +8,7 @@ PROGFILEEXT = sof
 SOURCE_FILES = ../../src/de1_adc_rtl.vhd 
 
 include ../makefile
+
+# Use the specific sdc file
+$(PROJECT).sdc: $(PROJECT)_special.sdc
+	ln -s $(PROJECT)_special.sdc $(PROJECT).sdc
