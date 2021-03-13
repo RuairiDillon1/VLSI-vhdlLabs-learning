@@ -52,7 +52,7 @@ quartus: $(PROJECT).qpf
 	quartus $(PROJECT).qpf &
 
 clean:
-	rm -rf *.rpt *.chg *.log quartus_vhdl_source_files.tcl *.htm *.eqn *.pin *.sof *.pof db incremental_db *.qpf *.qsf *.summary $(PROJECT).*
+	rm -rf *.rpt *.chg *.log quartus_vhdl_source_files.tcl *.htm *.eqn *.pin *.sof *.pof db incremental_db *.qpf *.qsf *.summary $(PROJECT).* *~
 
 ## ----------------------------------------------------------------------------
 ## Description: 
