@@ -1,9 +1,10 @@
-MATLAB_PROJECT_NAME = audio
-PROJECT = de1_matlab_$(MATLAB_PROJECT_NAME)
+MATLAB_DIR_NAME = audio
+MATLAB_PROJECT_NAME = audio_first
+PROJECT = de1_matlab_$(MATLAB_DIR_NAME)
 
 # Matlab produces a xxx_compile.do file which contains the vhdl files belonging to the project
 # Here I produce a list of these source files with full relative path to the matlab project
-SIMULINK_PATH=../../matlab/$(MATLAB_PROJECT_NAME)/hdl_prj/hdlsrc/$(MATLAB_PROJECT_NAME)
+SIMULINK_PATH=../../matlab/$(MATLAB_DIR_NAME)/hdl_prj/hdlsrc/$(MATLAB_PROJECT_NAME)
 MATLAB_SOURCE_FILE_NAMES = $(shell grep vcom $(SIMULINK_PATH)/*_compile.do | sed "s/vcom  \(.*\)/\1/g")
 MATLAB_SOURCE_FILES = $(foreach file,$(MATLAB_SOURCE_FILE_NAMES),$(SIMULINK_PATH)/$(file))
 
