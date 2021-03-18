@@ -64,11 +64,27 @@ BEGIN  -- tbench
     b_i <= '1';                         -- change value of b_i
     WAIT FOR period;
 
+    a_i <= '1';
+    WAIT FOR period;
+
+    a_i <= '0';
+    b_i <= '0';
+    sel_i <= '1';
+
+    WAIT FOR period;                    -- values are assigned here
+
+    a_i <= '1';                         -- change value of a_i
+    WAIT FOR period;
+
+    a_i <= '0';                         -- change value of a_i
+    b_i <= '1';                         -- change value of b_i
+    WAIT FOR period;
+
+    a_i <= '1';
+    WAIT FOR period;
 
     -- add the missing stimuli here ...
 
-    
-    
     WAIT;
   END PROCESS;
 
