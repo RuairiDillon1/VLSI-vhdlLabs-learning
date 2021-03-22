@@ -65,7 +65,7 @@ BEGIN  -- tbench
     WAIT FOR period;
 
     a_i <= '1';
-    WAIT FOR period;			-- Ruairi
+    WAIT FOR period;			
 
     a_i <= '0';
     b_i <= '0';
