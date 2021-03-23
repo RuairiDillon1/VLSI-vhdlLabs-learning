@@ -35,8 +35,12 @@ BEGIN
     outputs_s <=
     "00" WHEN "000",
     "10" WHEN "001",
-    -- fill in the missing lines here
-    -- ...
+    "10" WHEN "010",
+    "01" WHEN "011",
+    "10" WHEN "100",
+    "01" WHEN "101",
+    "01" WHEN "110",
+    "11" WHEN "111",
     "XX" WHEN OTHERS;
 
   sum_o <= outputs_s(1);         -- split vector elements ...
