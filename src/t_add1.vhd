@@ -86,7 +86,51 @@ BEGIN  -- tbench
 
     -- fill in the missing stimuli here
     -- ...
-	
+    -- Test case: 011
+
+    a_i  <= '1';                        -- set a value to input a_i 
+    WAIT FOR period;                    -- values are assigned here
+    -- Observer:
+    ASSERT sum_o = '0' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ASSERT co_o = '1' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ---------------------------------------------------------------------------
+
+    -- Test case: 100
+    ci_i <= '1';                        -- set a value to input ci_i 
+    b_i  <= '0';                        -- set a value to input b_i 
+    a_i  <= '0';                        -- set a value to input a_i 
+    WAIT FOR period;                    -- values are assigned here
+    -- Observer:
+    ASSERT sum_o = '1' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ASSERT co_o = '0' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ---------------------------------------------------------------------------
+
+    -- Test case: 101
+
+    a_i  <= '1';                        -- set a value to input a_i 
+    WAIT FOR period;                    -- values are assigned here
+    -- Observer:
+    ASSERT sum_o = '0' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ASSERT co_o = '1' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ---------------------------------------------------------------------------
+   
+ -- Test case: 110
+
+    b_i  <= '1';                        -- set a value to input b_i 
+    a_i  <= '0';                        -- set a value to input a_i 
+    WAIT FOR period;                    -- values are assigned here
+    -- Observer:
+    ASSERT sum_o = '0' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ASSERT co_o = '1' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ---------------------------------------------------------------------------
+
+    -- Test case: 111 
+    a_i  <= '1';                        -- set a value to input a_i 
+    WAIT FOR period;                    -- values are assigned here
+    -- Observer:
+    ASSERT sum_o = '1' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ASSERT co_o = '1' REPORT "Error: sum is not correct !" SEVERITY failure;
+    ---------------------------------------------------------------------------
 
 
     WAIT;
