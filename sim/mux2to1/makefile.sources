@@ -11,7 +11,10 @@
 ## ----------------------------------------------------------------------------
 
 SYN_SOURCE_FILES = \
-../../src/mux2to1_equation.vhd \
+../../src/and2gate_equation.vhd \
+../../src/or2gate_equation.vhd \
+../../src/invgate_equation.vhd \
+../../src/mux2to1_structure_errors.vhd \
 
 # do not delete this line
 # -----------------------------------------------------------------------------
