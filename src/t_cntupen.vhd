@@ -86,7 +86,7 @@ BEGIN  -- tbench
     ASSERT count_o = X"F" REPORT "Error: Expected count_o = F !" SEVERITY failure;
     ---------------------------------------------------------------------------
 
-                                        -- wait for a no. of count values
+    WAIT FOR 5 * period;                -- wait for a no. of count values
                                         -- then ...
     ---------------------------------------------------------------------------
 
@@ -94,8 +94,9 @@ BEGIN  -- tbench
     ---------------------------------------------------------------------------
     -- 4. After another five periods: Deactivate Enable
     ---------------------------------------------------------------------------
-                                        -- .... deactivate enable input en_pi
-    
+    en_pi <= '0';                        -- .... deactivate enable input en_pi
+    WAIT FOR 3 * period;
+
     ---------------------------------------------------------------------------
 
     
@@ -103,9 +104,9 @@ BEGIN  -- tbench
     -- 5. After another three periods: Activate Enable
     -- 6. Simulate another complete counting cycle
     ---------------------------------------------------------------------------
-                                        -- activate enable input en_pi
-                                        -- wait for at least one count cycle
---    ASSERT count_o = ??? REPORT "Error: Expected count_o = ??? !" SEVERITY failure;
+    en_pi <= '1';                       -- activate enable input en_pi
+    WAIT FOR 15 * period;                -- wait for at least one count cycle
+    ASSERT count_o = x"5" REPORT "Error: Expected count_o = 5!" SEVERITY failure;
 
 
     ---------------------------------------------------------------------------
