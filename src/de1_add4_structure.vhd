@@ -91,9 +91,14 @@ BEGIN
       segments_o => HEX0);
 
   operand_b : binto7segment
-    PORT MAP (                    -- fill in the missing components here ...
+    PORT MAP (
+      bin_i      => b,
+      segments_o => HEX1);
       
-
+  operand_c : binto7segment
+    PORT MAP (
+      bin_i      => sum,
+      segments_o => HEX2);
 
 END structure;
 -------------------------------------------------------------------------------

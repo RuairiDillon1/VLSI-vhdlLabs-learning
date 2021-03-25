@@ -45,8 +45,19 @@ BEGIN
              sum_o => sum_o(1),
              co_o  => carry1);
 
-  inst2 : add1                    -- add the missing components here ...
-    PORT MAP(
+  inst2 : add1
+    PORT MAP(a_i   => a_i(2),
+             b_i   => b_i(2),
+             ci_i  => carry1,
+             sum_o => sum_o(2),
+             co_o  => carry2);
+
+  inst3 : add1
+    PORT MAP(a_i   => a_i(3),
+             b_i   => b_i(3),
+             ci_i  => carry2,
+             sum_o => sum_o(3),
+             co_o  => co_o);
 
 END structure;
 -------------------------------------------------------------------------------

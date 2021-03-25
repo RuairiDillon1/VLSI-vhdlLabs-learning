@@ -52,6 +52,12 @@ BEGIN
       "1111000" WHEN "0111",    -- 7 incorrect vector values
       "0000000" WHEN "1000",    -- 8
       "0010000" WHEN "1001",    -- 9 incorrect vector values
+      "0001000" WHEN "1010",    -- 10 
+      "0000011" WHEN "1011",    -- 11
+      "1000110" WHEN "1100",    -- 12
+      "0100001" WHEN "1101",    -- 13
+      "0000110" WHEN "1110",    -- 14
+      "0001110" WHEN "1111",    -- 15
       "0000110" WHEN OTHERS;    -- displays Symbol 'E' for ERROR
 
 END truthtable;

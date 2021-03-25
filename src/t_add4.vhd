@@ -110,6 +110,9 @@ BEGIN  -- tbench
     ---------------------------------------------------------------------------
     
 
+    apply_stimuli('0', X"A", X"2");
+    apply_stimuli('1', X"A", X"2");
+    apply_stimuli('1', X"F", X"F");
     
 
     WAIT;
