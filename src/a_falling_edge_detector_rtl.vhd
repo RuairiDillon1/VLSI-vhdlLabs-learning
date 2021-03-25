@@ -30,7 +30,7 @@ BEGIN
   dflipflop_1 : q1 <= '0' WHEN (rst_ni = '0') ELSE
                       q0 WHEN rising_edge(clk_i);
   
-  output_logic : fall_o <= ;            -- fill in the correct equation here
+  output_logic : fall_o <= (not q0) and q1;            -- fill in the correct equation here
 
 END rtl;
 

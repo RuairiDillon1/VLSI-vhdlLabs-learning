@@ -90,22 +90,22 @@ BEGIN  -- tbench
     WAIT FOR 3 * period;                -- low active input pulse
     ---------------------------------------------------------------------------
 
+    x_i <= '0';                         
+    WAIT UNTIL rising_edge(clk_i);
+    WAIT UNTIL falling_edge(clk_i);
+    -- Observer: check, if fall_o is assigned to '1' for one clock period
+    ASSERT fall_o = '1' REPORT "Error: Expected fall_o = '1' !" SEVERITY failure;
+    WAIT UNTIL falling_edge(clk_i);
+    ASSERT fall_o = '0' REPORT "Error: Expected fall_o = '0' !" SEVERITY failure;
+    WAIT FOR 7 * period;               
 
-    -- add another low-active input pulse here ...
+    x_i <= '1'; 
+    WAIT FOR 3 * period; 
 
+    clken_p <= false;                  
 
-
-
-
-
-
-    
-
-    clken_p <= false;                   -- switch clock generator off
-
-    WAIT;                               -- suspend proces
-  END PROCESS;
-  
+    WAIT;                            
+    END PROCESS;
 
 END tbench;
 

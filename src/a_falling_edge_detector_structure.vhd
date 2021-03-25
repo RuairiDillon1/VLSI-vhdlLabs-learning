@@ -46,7 +46,7 @@ BEGIN
       d_i    => q0,
       q_o    => q1);
 
-  output_logic : fall_o <= ;            -- fill in the correct equation here
+  output_logic : fall_o <= (not q0) and q1;            -- fill in the correct equation here
 
 END structure;
 
