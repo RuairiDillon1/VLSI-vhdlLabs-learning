@@ -26,16 +26,19 @@ END cntdn;
 
 ARCHITECTURE rtl OF cntdn IS
 
+    signal state_n, state_c : unsigned(3 downto 0);
 
 BEGIN
 
-  incrementer : 
+  incrementer :  state_n <= state_c - 1;
 
-  state_register : 
+  state_register : state_c <= "0000" when rst_ni = '0' else state_n when 
+                      rising_edge(clk_i) and en_pi = '1';
 
-  counter_output : 
+  counter_output : count_o <= std_ulogic_vector(state_c);
 
-  terminal_output : 
+  --terminal_output : tc_o <= '1' when state_c = "0000" else '0';
+  terminal_output : tc_o <= not (state_c(3) or state_c(2) or state_c(1) or state_c(0));
 
 END rtl;
 
