@@ -66,17 +66,27 @@ BEGIN
   -- enable signal en_pi has to be connected via a falling edge detector
   single_pulse_generator : ENTITY work.falling_edge_detector(rtl)
     PORT MAP (
-
+        clk_i  => clk_i,
+        rst_ni => rst_ni,
+        x_i    => long_pulse,
+        fall_o => en_pi 
+    );
       
   -- connecting device under test with peripheral elements
   DUT : ENTITY work.cntupen(rtl)
     PORT MAP (
-
+      clk_i  => clk_i,
+      rst_ni => rst_ni, 
+      en_pi  => en_pi, 
+      count_o => count_o 
+    );
       
   -- connecting count value to HEX display
   count_value : ENTITY work.binto7segment(truthtable)
     PORT MAP (
-
+      bin_i      => count_o, 
+      segments_o => HEX0
+    );
       
 END structure;
 -------------------------------------------------------------------------------
