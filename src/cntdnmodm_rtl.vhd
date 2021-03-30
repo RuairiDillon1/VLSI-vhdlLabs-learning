@@ -36,13 +36,14 @@ BEGIN
 
   -- includes decrementer and modulo logic
   next_state_logic : next_state <= to_unsigned(m-1, n) WHEN current_state = 0 ELSE
-                                   current_state - 1;
+                                        current_state - 1;
+                                        
+  state_register : current_state <= to_unsigned(0, n) when rst_ni = '0' else
+                        next_state when rising_edge(clk_i) and en_pi = '1';
 
-  state_register :
+  counter_output : count_o <= std_ulogic_vector(current_state); 
 
-  counter_output : 
-
-  terminal_count : 
+  terminal_count : tc_o <= '1' when current_state = to_unsigned(0, n) else '0';
 
 END rtl;
 

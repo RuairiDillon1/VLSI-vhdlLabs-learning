@@ -82,11 +82,17 @@ BEGIN  -- tbench
   -- create a frequency of 100 Hz at its output signal tc_100hz_o
   -- declare the necessary signals count_modxxx_o and  tc_100hz_o
   -----------------------------------------------------------------------------
---   prescaler : cntdnmodm
---     GENERIC MAP (
---       n => 
---       m => )
---     PORT MAP (
+    prescaler : cntdnmodm
+    GENERIC MAP (
+     n => 19,
+     m => 500e3)
+    PORT MAP (
+      clk_i   => clk_i,
+      rst_ni  => rst_ni,
+      en_pi   => en_pi,
+      count_o => count_mod500e3_o,
+      tc_o    => tc_100hz_o);
+
   -----------------------------------------------------------------------------
 
 
@@ -132,11 +138,15 @@ BEGIN  -- tbench
 
     
     -- wait for a period of tc_100hz_o ----------------------------------------
+    wait until rising_edge(tc_100hz_o);
+    wait until falling_edge(tc_100hz_o);
 
     ---------------------------------------------------------------------------
 
 
     -- wait for a period of tc_100hz_o ----------------------------------------
+    wait until rising_edge(tc_100hz_o);
+    wait until falling_edge(tc_100hz_o);
 
     ---------------------------------------------------------------------------
     

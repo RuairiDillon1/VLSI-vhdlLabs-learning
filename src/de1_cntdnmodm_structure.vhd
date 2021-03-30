@@ -90,11 +90,16 @@ BEGIN
   -- create a frequency of 100 Hz at its output signal tc_100hz_o
   -- declare the necessary signals count_modxxx_o and  tc_100hz_o
   -----------------------------------------------------------------------------
---   prescaler : cntdnmodm
---     GENERIC MAP (
---       n => 
---       m => )
---     PORT MAP (
+    prescaler : entity work.cntdnmodm
+    GENERIC MAP (
+     n => 19,
+     m => 500e3)
+    PORT MAP (
+      clk_i   => clk_i,
+      rst_ni  => rst_ni,
+      en_pi   => en_pi,
+      count_o => open,
+      tc_o    => tc_100hz_o);
   -----------------------------------------------------------------------------
   
   -- connecting count value to GPIO1
