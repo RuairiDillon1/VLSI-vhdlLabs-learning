@@ -49,7 +49,7 @@ BEGIN
   a <= unsigned(SW(2 DOWNTO 0));
   b <= unsigned(SW(6 DOWNTO 4));
 
-  sum <= (a + b);
+  sum <= resize((a + b),4);
   -- display result on HEX0
   result_sum : binto7segment
     PORT MAP (
