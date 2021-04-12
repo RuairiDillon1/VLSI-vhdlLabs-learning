@@ -45,7 +45,10 @@ BEGIN
   LEDR(3)          <= '0';
   LEDR(6 DOWNTO 4) <= SW(6 DOWNTO 4);
   LEDR(7)          <= '0';
+  a <= to_unsigned(SW(2 DOWNTO 0));
+  b <= to_unsigned(SW(6 DOWNTO 4));
 
+  sum := a + b;
   -- display result on HEX0
   result_sum : binto7segment
     PORT MAP (
