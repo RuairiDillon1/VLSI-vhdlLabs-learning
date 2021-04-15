@@ -21,7 +21,7 @@ ARCHITECTURE rtl OF twosc2sm IS
 BEGIN 
 
  --Twos complement conversion
- inter <= std_ulogic_vector(unsigned(NOT operand_i(2 DOWNTO 0))+1 );
+ inter <= std_ulogic_vector(unsigned(NOT operand_i(2 DOWNTO 0)) + 1);
 
  operand_u(3) <= operand_i(3);
  operand_u(2 downto 0) <= operand_i(2 downto 0) WHEN operand_i(3) = '0' ELSE inter;

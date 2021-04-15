@@ -73,7 +73,8 @@ BEGIN
   -- display result on HEX0
   result_sum : binto7segment
     PORT MAP (
-      bin_i      => std_ulogic_vector(sum),
+      bin_i      => std_ulogic_vector('0' & disp(2 downto 0)),
+      --bin_i     => std_ulogic_vector(sum),
       segments_o => HEX0);
 
 END structure;
