@@ -11,7 +11,7 @@ ENTITY twosc2sm IS
 	operand_u : OUT std_ulogic_vector(3 DOWNTO 0)
 );
 
-END ENTITY
+END ENTITY;
 
 ARCHITECTURE rtl OF twosc2sm IS
 
@@ -20,8 +20,11 @@ ARCHITECTURE rtl OF twosc2sm IS
 
 BEGIN 
 
+ --Twos complement conversion
  inter <= std_ulogic_vector(unsigned(NOT operand_i(2 DOWNTO 0))+1 );
- operand_u <= operand_i WHEN operand_i(3)=0 ELSE 1 & inter;
+
+ operand_u(3) <= operand_i(3);
+ operand_u(2 downto 0) <= operand_i(2 downto 0) WHEN operand_i(3) = '0' ELSE inter;
 
 END rtl;
 
