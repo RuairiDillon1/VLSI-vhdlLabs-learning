@@ -47,7 +47,8 @@ PROGFILEEXT = sof
 # Add the toplevel fpga vhdl file
 SOURCE_FILES = $(SYN_SOURCE_FILES) \
 ../../src/binto7segment_truthtable.vhd \
-../../src/$(PROJECT)_structure.vhd
+../../src/$(PROJECT)_structure.vhd  \
+../../src/twosc2sm.vhd
 
 include ../makefile
 
