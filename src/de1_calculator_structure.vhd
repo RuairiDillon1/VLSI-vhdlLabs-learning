@@ -15,7 +15,7 @@ USE IEEE.numeric_std.ALL;
 ENTITY de1_calculator IS
   PORT (
     SW   : IN  std_ulogic_vector(7 DOWNTO 0);  -- Toggle Switch[7:0]
-    LEDR : OUT std_ulogic_vector(8 DOWNTO 0);  -- LED Red[7:0]
+    LEDR : OUT std_ulogic_vector(9 DOWNTO 0);  -- LED Red[7:0]
     HEX0 : OUT std_ulogic_vector(6 DOWNTO 0)   -- Seven Segment Digit 0
     );
 END de1_calculator;
@@ -59,6 +59,8 @@ BEGIN
 
   a <= signed(SW(3 DOWNTO 0));
   b <= signed(SW(7 DOWNTO 4));
+
+  LEDR(9) <= ((a(3) AND b(3)) AND NOT sum(3)) OR ((NOT a(3) AND NOT b(3)) AND sum(3));  
 
   sum <= a + b;
 
