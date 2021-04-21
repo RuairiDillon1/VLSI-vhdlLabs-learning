@@ -12,7 +12,6 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -22,9 +21,9 @@ end;
 
 architecture tbench of t_de1_audio is
 
-component de1_audio is 
+component de1_audio is
   port (
-    CLOCK_24:   in std_ulogic;
+    CLOCK_50:   in std_ulogic;
     KEY0:       in std_ulogic;
     I2C_SCLK:   out std_ulogic;
     I2C_SDAT:   inout std_ulogic; 
@@ -51,7 +50,7 @@ begin
 
   de1_audio_i0 : de1_audio
     port map (
-      CLOCK_24            => clk,
+      CLOCK_50            => clk,
       KEY0                => reset_n,
       I2C_SCLK            => i2c_clk,
       I2C_SDAT            => i2c_dat,
@@ -66,9 +65,9 @@ begin
   clock_p : process
   begin
     clk <= '0';
-    wait for 21 ns;
+    wait for 10 ns;
     clk <= '1';
-    wait for 21 ns;
+    wait for 10 ns;
     if not simrun then
       wait;
     end if;
