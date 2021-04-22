@@ -15,7 +15,6 @@ end entity;
 architecture rtl of heartbeat_gen is 
 
     component cntdnmodm is 
-        port map (
               GENERIC (
                 n : natural := 4;                   -- counter width
                 m : natural := 10);                 -- modulo value
@@ -25,7 +24,6 @@ architecture rtl of heartbeat_gen is
                     count_o : OUT std_ulogic_vector(n-1 DOWNTO 0);
                     tc_o    : OUT std_ulogic
                     );
-                 );
     end component; 
 
 
@@ -45,51 +43,51 @@ begin
 
   heartbeat_o <= heartbeat;  
 
-  smp_p : process(c_state, QRS_ready, TU_ready, ST_ready, en_pi)
+  sm_p : process(c_state, QRS_ready, TU_ready, ST_ready, en_pi)
   begin
   n_state <= c_state;
   heartbeat <= '0';
-  ST_ready <= '0';
-  QRS_ready <= '0';
-  TU_ready <= '0';
+  ST_en <= '0';
+  QRS_en <= '0';
+  TU_en <= '0';
 
   case c_state is
-  when idle_s =>
-    if en_pi <= '1' then n_state <= QRS_s; end if;
+    when idle_s =>
+    if en_pi = '1' then n_state <= QRS_s; end if;
 
-  when QRS_s =>
-  heartbeat <= '1';
-  QRS_ready <= '1';
-    if QRS_ready <= '1' then n_state <= ST_s; end if;
+    when QRS_s =>
+    heartbeat <= '1';
+    QRS_en <= '1';
+    if QRS_ready = '1' then n_state <= ST_s; end if;
 
 
-  when ST_s =>
-  ST_ready <= '1';
-    if ST_ready <= '1' then n_state <= TU_s; end if;
+    when ST_s =>
+    ST_en <= '1';
+    if ST_ready = '1' then n_state <= TU_s; end if;
 
-  when TU_s =>
-  heartbeat <= '1';
-  TU_ready <= '1';
-    if TU_ready <= '1' then n_state <= idle_s; end if;
+    when TU_s =>
+    heartbeat <= '1';
+    TU_en <= '1';
+    if TU_ready = '1' then n_state <= idle_s; end if;
 
   end case;
-end process sm_p;
+  end process sm_p;
 
-current_state <= idle_s when rst_ni '0' else
-                 n_state when rising_edge(clk);
+c_state <= idle_s when rst_ni = '0' else 
+           n_state when rising_edge(clk_i);
 
   counter_QRS : cntdnmodm
-   generic map (n => 16, m => 4800);
+   generic map (n => 32, m => 5000000)
 
     PORT MAP(clk_i   => clk_i,
              rst_ni   => rst_ni,
-             en_pi  => QRD_en,
+             en_pi  => QRS_en,
              count_o => open,
              tc_o  => QRS_ready);
 
   counter_ST : cntdnmodm
 
-   generic map (n => 16, m => 6720);
+   generic map (n => 32, m => 7000000)
 
     PORT MAP(clk_i   => clk_i,
              rst_ni   => rst_ni,
@@ -100,7 +98,7 @@ current_state <= idle_s when rst_ni '0' else
 
   counter_TU : cntdnmodm
 
-   generic map (n => 16, m => 7680);
+   generic map (n => 32, m => 8000000)
 
     PORT MAP(clk_i   => clk_i,
              rst_ni   => rst_ni,

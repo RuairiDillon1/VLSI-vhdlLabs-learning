@@ -38,7 +38,7 @@ BEGIN
   next_state_logic : next_state <= to_unsigned(m-1, n) WHEN current_state = 0 ELSE
                                         current_state - 1;
                                         
-  state_register : current_state <= to_unsigned(0, n) when rst_ni = '0' else
+  state_register : current_state <= to_unsigned(m-1, n) when rst_ni = '0' else
                         next_state when rising_edge(clk_i) and en_pi = '1';
 
   counter_output : count_o <= std_ulogic_vector(current_state); 
