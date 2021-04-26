@@ -39,7 +39,7 @@ architecture tbench of t_heartbeat_gen is
 begin 
 
     prescaler : cntdnmodm 
-    generic map(n => 32, m => 21650000)
+    generic map(n => 32, m => 41650000)
     port map(
             clk_i => clk_50, 
             rst_ni => reset, 
@@ -71,7 +71,7 @@ begin
 
   sim_p : process
   begin 
-      wait for 21650000 * 2 * period;
+      wait for 41650000 * 2 * period;
       clken_p <= False;
       wait;
   end process; 
