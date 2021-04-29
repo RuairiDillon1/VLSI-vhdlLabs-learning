@@ -40,6 +40,25 @@ architecture tbench of t_de1_tone is
       );
   end component;
 
+  component phase_gen is 
+    generic(width : integer := 16);
+    port(
+            clk_i     : in std_ulogic;
+            rst_n     : in std_ulogic;
+            en_p      : in std_ulogic;
+            phase_inc : in std_ulogic_vector(width-1 downto 0);
+            phase_o   : out std_ulogic_vector(width-1 downto 0)
+        );
+  end component;
+
+  component triangle_wave_gen is 
+    port(
+        clk_i   : in std_ulogic; 
+        rst_n   : in std_ulogic; 
+        phase_i : in std_ulogic_vector(16 downto 0);
+        sig_o   : out std_ulogic_vector(15 downto 0));
+  end component;
+
   signal clk, reset_n     : std_ulogic;
   signal ledr             : std_ulogic_vector(9 downto 0);
   signal i2c_clk, i2c_dat : std_ulogic;
@@ -54,6 +73,9 @@ architecture tbench of t_de1_tone is
   signal test_tone_quantized : signed(15 downto 0);
   signal bit_count           : integer range 0 to 31;
   signal switches            : std_ulogic_vector(9 downto 0);
+
+  signal phase_triangle : std_ulogic_vector(16 downto 0);
+  signal triangle_wave : std_ulogic_vector(15 downto 0);
 
 begin
 
@@ -71,6 +93,23 @@ begin
       AUD_BCLK    => aud_bclk,
       SW          => switches,
       LEDR        => ledr);
+
+  phase1 : phase_gen
+    generic map(width => 17)
+    port map(
+             clk_i => aud_daclrck, 
+             rst_n => reset_n, 
+             en_p => '1',
+             phase_inc => '0' & x"2000",
+             phase_o => phase_triangle);
+
+  sig_gen : triangle_wave_gen
+  port map(
+            clk_i => clk, 
+            rst_n => reset_n,
+            phase_i => phase_triangle,
+            sig_o => triangle_wave 
+          );
 
   clock_p : process
   begin

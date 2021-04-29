@@ -66,6 +66,25 @@ architecture struct of de1_tone is
           audio_o    : out std_ulogic_vector(15 downto 0));
   end component;
 
+  component phase_gen is 
+    generic(width : integer := 16);
+    port(
+            clk_i     : in std_ulogic;
+            rst_n     : in std_ulogic;
+            en_p      : in std_ulogic;
+            phase_inc : in std_ulogic_vector(width-1 downto 0);
+            phase_o   : out std_ulogic_vector(width-1 downto 0)
+        );
+  end component;
+
+  component triangle_wave_gen is 
+    port(
+        clk_i   : in std_ulogic; 
+        rst_n   : in std_ulogic; 
+        phase_i : in std_ulogic_vector(16 downto 0);
+        sig_o   : out std_ulogic_vector(15 downto 0));
+  end component;
+
   signal clk, reset_n : std_ulogic;
 
   signal i2c_dat_o : std_ulogic;
@@ -74,6 +93,10 @@ architecture struct of de1_tone is
   signal adc_valid          : std_ulogic;
   signal dac_strobe         : std_ulogic;
   signal dac_data, adc_data : std_ulogic_vector(15 downto 0);
+
+  signal phase_inc_triangle : std_ulogic_vector(16 downto 0);
+  signal phase_triangle : std_ulogic_vector(16 downto 0);
+  signal dac_clk : std_ulogic;
 
 begin
 
@@ -89,7 +112,7 @@ begin
       i2c_dat_o     => i2c_dat_o,
       aud_adclrck_o => AUD_ADCLRCK,
       aud_adcdat_i  => AUD_ADCDAT,
-      aud_daclrck_o => AUD_DACLRCK,
+      aud_daclrck_o => dac_clk,
       aud_dacdat_o  => AUD_DACDAT,
       aud_xck_o     => AUD_XCK,
       aud_bclk_o    => AUD_BCLK,
@@ -98,14 +121,38 @@ begin
       dac_data_i    => dac_data,
       dac_strobe_o  => dac_strobe);
 
-  tone_i0 : tone
-    port map (
-      clk        => clk,
-      rst_n      => reset_n,
-      dv_i       => adc_valid,
-      audio_i    => adc_data,
-      audio_o    => dac_data,
-      switches_i => SW);
+  AUD_DACLRCK <= dac_clk;
+
+  phase_inc_triangle(16) <= '0';
+  phase_inc_triangle(15 downto 6) <= SW(9 downto 0);
+  phase_inc_triangle(5 downto 0) <= (others => '0');
+
+  phase1 : phase_gen
+    generic map(width => 17)
+    port map(
+             clk_i => dac_clk, 
+             rst_n => reset_n, 
+             en_p => '1',
+             phase_inc => phase_inc_triangle,
+             phase_o => phase_triangle);
+
+  sig_gen : triangle_wave_gen
+  port map(
+            clk_i => clk, 
+            rst_n => reset_n,
+            phase_i => phase_triangle,
+            sig_o => dac_data
+          );
+
+--tone_i0 : tone
+--  port map (
+--    clk        => clk,
+--    rst_n      => reset_n,
+--    dv_i       => adc_valid,
+--    audio_i    => adc_data,
+--    audio_o    => dac_data,
+--    switches_i => SW);
+
 
   LEDR(9 downto 0) <= SW;
 
