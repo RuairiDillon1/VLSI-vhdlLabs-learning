@@ -2,18 +2,18 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 
-entity lsfr_fibonacci is
+entity lfsr_fibonacci is
     port(
         clk_i       : in std_ulogic;
         en_pi       : in std_ulogic;
         rst_n       : in std_ulogic;
         lfsr_o      : out std_ulogic_vector(17 downto 0);
         noise_o     : out std_ulogic; 
-        eoc_po      : out std_ulogic; 
+        eoc_po      : out std_ulogic 
         );
 end entity; 
 
-architecture rtl of lsfr_fibonacci is 
+architecture rtl of lfsr_fibonacci is 
     signal c_state_register, n_state_register : std_ulogic_vector(17 downto 0);
     signal feedback : std_ulogic;
 begin 
@@ -30,5 +30,6 @@ begin
 
     lfsr_o <= c_state_register;
     noise_o <= c_state_register(0);
-    eoc_po <= '1' when n_state_register = std_ulogic_vector(to_unsigned(1, n_state_register'length)));
+    eoc_po <= '0' when rst_n = '0' else '1' 
+              when n_state_register = std_ulogic_vector(to_unsigned(1, n_state_register'length));
 end architecture;
