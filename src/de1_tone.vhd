@@ -67,7 +67,7 @@ architecture struct of de1_tone is
   end component;
 
   component phase_gen is 
-    generic(width : integer := 16);
+    generic(width : integer := 15);
     port(
             clk_i     : in std_ulogic;
             rst_n     : in std_ulogic;
@@ -79,9 +79,7 @@ architecture struct of de1_tone is
 
   component triangle_wave_gen is 
     port(
-        clk_i   : in std_ulogic; 
-        rst_n   : in std_ulogic; 
-        phase_i : in std_ulogic_vector(16 downto 0);
+        phase_i : in std_ulogic_vector(15 downto 0);
         sig_o   : out std_ulogic_vector(15 downto 0));
   end component;
 
@@ -94,8 +92,8 @@ architecture struct of de1_tone is
   signal dac_strobe         : std_ulogic;
   signal dac_data, adc_data : std_ulogic_vector(15 downto 0);
 
-  signal phase_inc_triangle : std_ulogic_vector(16 downto 0);
-  signal phase_triangle : std_ulogic_vector(16 downto 0);
+  signal phase_inc_triangle : std_ulogic_vector(15 downto 0);
+  signal phase_triangle : std_ulogic_vector(15 downto 0);
   signal dac_clk : std_ulogic;
 
 begin
@@ -123,12 +121,11 @@ begin
 
   AUD_DACLRCK <= dac_clk;
 
-  phase_inc_triangle(16) <= '0';
   phase_inc_triangle(15 downto 6) <= SW(9 downto 0);
   phase_inc_triangle(5 downto 0) <= (others => '0');
 
   phase1 : phase_gen
-    generic map(width => 17)
+    generic map(width => 16)
     port map(
              clk_i => dac_clk, 
              rst_n => reset_n, 
@@ -138,8 +135,6 @@ begin
 
   sig_gen : triangle_wave_gen
   port map(
-            clk_i => clk, 
-            rst_n => reset_n,
             phase_i => phase_triangle,
             sig_o => dac_data
           );
