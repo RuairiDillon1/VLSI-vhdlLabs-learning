@@ -9,7 +9,7 @@ entity lfsr_fibonacci is
         rst_n       : in std_ulogic;
         lfsr_o      : out std_ulogic_vector(3 downto 0);
         noise_o     : out std_ulogic; 
-        eoc_po      : out std_ulogic; 
+        eoc_po      : out std_ulogic 
         );
 end entity; 
 
@@ -18,7 +18,7 @@ architecture rtl of lfsr_fibonacci is
 begin 
 
     --shift
-    n_state_register <=  c_state_register(1) xor c_state_register(0) & c_state_register(3 downto 1);
+    n_state_register <=  (c_state_register(1) xor c_state_register(0)) & c_state_register(3 downto 1);
 
     --change output
     c_state_register <= "0001" when rst_n = '0' else n_state_register 
@@ -26,5 +26,5 @@ begin
 
     lfsr_o <= c_state_register;
     noise_o <= c_state_register(0);
-    eoc_po <= '1' when c_state_register = "0011"
+    eoc_po <= '1' when c_state_register = "0011";
 end architecture;
