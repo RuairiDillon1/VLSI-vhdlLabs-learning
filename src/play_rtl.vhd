@@ -41,7 +41,7 @@ end play;
 
 architecture rtl of play is
 
-  type state_t is (start_s,one_s,chance_s,four_s,last_s,hit0_s,hit1_s);
+  type state_t is (start_s,one_s,chance_s,twice_s, four_s,last_s,hit0_s,hit1_s);
   signal current_state,next_state : state_t;
 
 begin
@@ -66,10 +66,19 @@ begin
         when chance_s =>
           led_o <= "00100";
           if key_i = '1' then
+            next_state <= twice_s;
+          elsif onesec_i = '1' then
+            next_state <= four_s; 
+          end if;
+
+        when twice_s =>
+          led_o <= "00100";
+          if key_i = '1' then
             next_state <= hit0_s;
           elsif onesec_i = '1' then
             next_state <= four_s; 
           end if;
+
         when four_s =>
           led_o <= "00010";
           if onesec_i = '1' then
