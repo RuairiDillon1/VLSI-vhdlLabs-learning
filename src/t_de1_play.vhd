@@ -26,7 +26,10 @@ component de1_play is
 end component;
 
   -- definition of a clock period
-  constant period : time    := 10 ns;
+  -- 50 MHz
+  constant period : time    := 20 ns;
+  -- 1 second timer counts 1 us to enable faster simulation
+  constant s1_sim : time    := 1 us;
   -- switch for clock generator
   signal clken_p  : boolean := true;
 
@@ -60,13 +63,26 @@ begin
 
   stimuli_p : process
     begin
-      key <= '1';     
+      key <= '0';     
       wait until rst_ni = '1';      
-      wait for 20*period;
-      key <= '0';
-      wait for 10*period;
+      --press key 2 times after 2 us
+      wait for 2*s1_sim;
       key <= '1';
-      wait for 30*period;
+      wait for period;
+      key <= '0';
+      wait for period;
+      key <= '1';
+      wait for period;
+      key <= '0';
+      wait for 2*s1_sim; 
+
+      --exit winning sequence
+      key <= '1'; 
+      wait for period;
+      key <= '0'; 
+
+      -- end simulation fter 10 us
+      wait for 10*s1_sim; 
       clken_p <= false;
       wait;    
   end process stimuli_p;

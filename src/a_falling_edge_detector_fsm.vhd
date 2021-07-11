@@ -39,7 +39,7 @@ begin
         end if;
 
       when detection_s     =>  -- detection state
-	fall_o <= '1';
+	      fall_o <= '1';
         if x_i = '0' then 
           next_state <= low_s;
         else 

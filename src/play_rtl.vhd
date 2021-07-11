@@ -36,7 +36,8 @@ entity play is
         rst_n      : in  std_ulogic;
         onesec_i   : in  std_ulogic;
         key_i      : in  std_ulogic;
-        led_o      : out std_ulogic_vector(4 downto 0));
+        led_o      : out std_ulogic_vector(4 downto 0);
+        tone_en_o  : out std_ulogic);
 end play;
 
 architecture rtl of play is
@@ -52,7 +53,9 @@ begin
     begin
       next_state <= current_state;
       led_o <= "00000";
+      tone_en_o <= '0';
       case current_state is
+        -- inital state
         when start_s =>
           led_o <= "10000";
           if onesec_i = '1' then
@@ -98,6 +101,7 @@ begin
           end if;
         when hit1_s =>
           led_o <= "00001";
+          tone_en_o <= '1';
           if key_i = '1' then
             next_state <= chance_s;
           elsif onesec_i = '1' then

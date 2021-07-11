@@ -12,6 +12,7 @@
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+use ieee.numeric_std.all;
 -------------------------------------------------------------------------------
 
 ENTITY t_add4 IS
@@ -77,24 +78,24 @@ BEGIN  -- tbench
     END PROCEDURE apply_stimuli;
   
   BEGIN
-    a_i  <= X"0";            -- set a value to input a_i as hexadecimal value
-    b_i  <= B"0000";         -- set a value to input b_i as binary vector value
-    ci_i <= '0';             -- set a value to input ci_i as a 1-bit value
-    WAIT FOR period;         -- values are assigned here
-    ASSERT sum_o = X"0" REPORT "Error: sum is not correct !" SEVERITY failure;
-    ASSERT co_o = '0' REPORT "Error: co is not correct !" SEVERITY failure;
+--  a_i  <= X"0";            -- set a value to input a_i as hexadecimal value
+--  b_i  <= B"0000";         -- set a value to input b_i as binary vector value
+--  ci_i <= '0';             -- set a value to input ci_i as a 1-bit value
+--  WAIT FOR period;         -- values are assigned here
+--  ASSERT sum_o = X"0" REPORT "Error: sum is not correct !" SEVERITY failure;
+--  ASSERT co_o = '0' REPORT "Error: co is not correct !" SEVERITY failure;
 
-                             -- prefix B is the default, hence not necessary to write
-    a_i <= "1111";           -- change value of a_i as binary vector value
-    WAIT FOR period;
-    ASSERT sum_o = X"F" REPORT "Error: sum is not correct !" SEVERITY failure;
-    ASSERT co_o = '0' REPORT "Error: co is not correct !" SEVERITY failure;
+--                           -- prefix B is the default, hence not necessary to write
+--  a_i <= "1111";           -- change value of a_i as binary vector value
+--  WAIT FOR period;
+--  ASSERT sum_o = X"F" REPORT "Error: sum is not correct !" SEVERITY failure;
+--  ASSERT co_o = '0' REPORT "Error: co is not correct !" SEVERITY failure;
 
-    a_i <= X"0";             -- change value of a_i
-    b_i <= B"0101";             -- change value of b_i
-    WAIT FOR period;
-    ASSERT sum_o = X"5" REPORT "Error: sum is not correct !" SEVERITY failure;
-    ASSERT co_o = '0' REPORT "Error: co is not correct !" SEVERITY failure;
+--  a_i <= X"0";             -- change value of a_i
+--  b_i <= B"0101";             -- change value of b_i
+--  WAIT FOR period;
+--  ASSERT sum_o = X"5" REPORT "Error: sum is not correct !" SEVERITY failure;
+--  ASSERT co_o = '0' REPORT "Error: co is not correct !" SEVERITY failure;
 
 
     -- alternatively, a local procedure can be used to assign input values:
@@ -108,12 +109,15 @@ BEGIN  -- tbench
 
     -- add your stimuli here ...
     ---------------------------------------------------------------------------
-    
-
-    apply_stimuli('0', X"A", X"2");
-    apply_stimuli('1', X"A", X"2");
-    apply_stimuli('1', X"F", X"F");
-    
+    -- iterate over all possible combinations of a_i, b_i and c_i 
+    for num1 in 0 to 15 loop 
+      for num2 in 0 to 15 loop
+        apply_stimuli('0', std_ulogic_vector(to_unsigned(num1, 4)), 
+                          std_ulogic_vector(to_unsigned(num2, 4)));
+        apply_stimuli('1', std_ulogic_vector(to_unsigned(num1, 4)), 
+                          std_ulogic_vector(to_unsigned(num2, 4))));
+      end loop;
+    end loop;
 
     WAIT;
   END PROCESS;

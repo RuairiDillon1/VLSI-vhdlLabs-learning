@@ -10,8 +10,14 @@ end entity;
 
 architecture rtl of count1s is
  signal count_val, next_count_val : unsigned(32 downto 0); 
+ -- count 1s (value for implementation)
+ --constant loading_val : integer := 50000000;  
+ -- count 1us (value for simulation) 
+ constant loading_val : integer := 50;  
 begin
-  count_val <= to_unsigned(0, count_val'length) when rst_n = '0' else next_count_val when rising_edge(clk);
-  next_count_val <= (count_val + 1) mod to_unsigned(50000000, count_val'length);
+  count_val <= to_unsigned(loading_val - 1, count_val'length) when rst_n = '0' 
+               else next_count_val when rising_edge(clk);
+  next_count_val <= to_unsigned(loading_val -1, count_val'length) when count_val = 0 
+                    else (count_val - 1);
   onesec_o <= '1' when count_val = to_unsigned(0, count_val'length) else '0'; 
 end architecture rtl;

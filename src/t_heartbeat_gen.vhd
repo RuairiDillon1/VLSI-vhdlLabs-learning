@@ -28,31 +28,33 @@ architecture tbench of t_heartbeat_gen is
        );
   end component; 
 
-  signal clk_50 : std_ulogic; 
-  signal reset : std_ulogic;
-  signal prescaler_en  : std_ulogic;
-  signal beat : std_ulogic; 
+  signal clk_50     : std_ulogic; 
+  signal reset      : std_ulogic;
+  signal intern_clk_en : std_ulogic;
+  signal beat       : std_ulogic; 
 
-  constant period : time := 20 ns; 
+  constant period : time := 20 ns;  
+  --constant clk_divider: natural := 50000;
+  constant clk_divider: natural := 50;
   signal clken_p : boolean := True;
 
 begin 
 
     prescaler : cntdnmodm 
-    generic map(n => 32, m => 41650000)
+    generic map(n => 32, m => clk_divider)
     port map(
             clk_i => clk_50, 
             rst_ni => reset, 
             en_pi => '1', 
             count_o => open, 
-            tc_o => prescaler_en
+            tc_o => intern_clk_en
             );
 
     heart1 : heartbeat_gen
     port map(
             clk_i => clk_50, 
             rst_ni => reset, 
-            en_pi => prescaler_en, 
+            en_pi => intern_clk_en, 
             count_o => open, 
             heartbeat_o => beat
             );
@@ -71,7 +73,7 @@ begin
 
   sim_p : process
   begin 
-      wait for 41650000 * 2 * period;
+      wait for 833 * 2 * clk_divider * period + 10 * period;
       clken_p <= False;
       wait;
   end process; 

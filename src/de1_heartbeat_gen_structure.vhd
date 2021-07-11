@@ -27,7 +27,7 @@ architecture structure of de1_heartbeat_gen is
         clk_i   : in    std_ulogic; 
         rst_ni  : in    std_ulogic; 
         en_pi   : in    std_ulogic; 
-        count_o : out   std_ulogic_vector(63 downto 0); 
+        count_o : out   std_ulogic_vector(15 downto 0); 
         heartbeat_o    : out   std_ulogic
        );
   end component; 
@@ -38,7 +38,7 @@ architecture structure of de1_heartbeat_gen is
 begin 
 
     prescaler : cntdnmodm
-    generic map(n => 32, m => 41650000)
+    generic map(n => 32, m => 50000)
     port map(
             clk_i => CLOCK_50, 
             rst_ni => rst_n, 

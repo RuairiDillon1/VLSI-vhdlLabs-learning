@@ -71,12 +71,12 @@ architecture structure of de1_play is
         rst_n      : in  std_ulogic;
         onesec_i   : in  std_ulogic;
         key_i      : in  std_ulogic;
-        led_o      : out std_ulogic_vector(4 downto 0));
+        led_o      : out std_ulogic_vector(4 downto 0);
+        tone_en_o  : out std_ulogic);
   end component;
 
   signal clk      : std_ulogic;
   signal rst_n    : std_ulogic;
-  signal key_inv  : std_ulogic;
   signal key_edge : std_ulogic;
 
   signal one_second_period : std_ulogic;
@@ -87,6 +87,8 @@ architecture structure of de1_play is
   signal adc_valid          : std_ulogic;
   signal dac_data, adc_data : std_ulogic_vector(15 downto 0);
 
+  signal audio_signal : std_ulogic_vector(15 downto 0); 
+  signal tone_en : std_ulogic;
 begin
 
   -- connecting clock generator master clock of synchronous system
@@ -118,7 +120,9 @@ begin
       rst_n    => rst_n,
       onesec_i => one_second_period,
       key_i    => key_edge,
-      led_o    => LEDR);
+      led_o    => LEDR, 
+      tone_en_o => tone_en
+      );
 
   audio_i0 : audio
     port map (
@@ -143,9 +147,12 @@ begin
       clk        => clk,
       rst_n      => rst_n,
       dv_i       => adc_valid,
+--      dv_i => '1',
       audio_i    => adc_data,
-      audio_o    => dac_data,
-      switches_i => "0000000000");
+      audio_o    => audio_signal,
+      switches_i => "0000100000");
+
+    dac_data <= x"0000" when tone_en = '0' else audio_signal; 
 
     -- i2c has an open-drain ouput
   i2c_dat_i <= I2C_SDAT;

@@ -4,11 +4,11 @@ USE IEEE.numeric_std.ALL;
 
 entity heartbeat_gen is 
    port(
-        clk_i   : in    std_ulogic; 
-        rst_ni  : in    std_ulogic; 
-        en_pi   : in    std_ulogic; 
-        count_o : out   std_ulogic_vector(63 downto 0); 
-        heartbeat_o    : out   std_ulogic
+        clk_i           : in    std_ulogic; 
+        rst_ni          : in    std_ulogic; 
+        en_pi           : in    std_ulogic; 
+        count_o         : out   std_ulogic_vector(15 downto 0); 
+        heartbeat_o     : out   std_ulogic
        );
 end entity;
 
@@ -27,84 +27,56 @@ architecture rtl of heartbeat_gen is
     end component; 
 
 
-  type state_t is (idle_s, QRS_s, ST_s, TU_s);
-  signal QRS_ready : std_ulogic;
-  signal TU_ready : std_ulogic;
-  signal ST_ready : std_ulogic;
+  type state_t is (QRS_s, ST_s, T_s, TQ_s);
+  signal en_qrs, en_st, en_t, en_tq : boolean;
   signal heartbeat : std_ulogic;
-  signal QRS_en : std_ulogic;
-  signal ST_en : std_ulogic;
-  signal TU_en : std_ulogic;
   signal c_state, n_state : state_t;
 
-
-
+  signal counter_val : std_ulogic_vector(15 downto 0); 
+  signal counter_finished: std_ulogic;
 begin 
 
   heartbeat_o <= heartbeat;  
 
-  sm_p : process(c_state, QRS_ready, TU_ready, ST_ready, en_pi)
+  sm_p : process(c_state, en_qrs, en_st, en_t, en_tq)
   begin
-  n_state <= c_state;
-  heartbeat <= '0';
-  ST_en <= '0';
-  QRS_en <= '0';
-  TU_en <= '0';
+    n_state <= c_state;
+    heartbeat <= '0';
 
-  case c_state is
-    when idle_s =>
-    if en_pi = '1' then n_state <= QRS_s; end if;
+    case c_state is
+      when TQ_s =>
+        if unsigned(counter_val) = 400 then 
+          n_state <= QRS_s; 
+        end if;
 
-    when QRS_s =>
-    heartbeat <= '1';
-    QRS_en <= '1';
-    if QRS_ready = '1' then n_state <= ST_s; end if;
+      when QRS_s =>
+        heartbeat <= '1';
+        if unsigned(counter_val) = 300 then 
+          n_state <= ST_s; 
+        end if;
 
+      when ST_s =>
+        if unsigned(counter_val)= 160 then 
+          n_state <= T_s; 
+        end if;
 
-    when ST_s =>
-    ST_en <= '1';
-    if ST_ready = '1' then n_state <= TU_s; end if;
-
-    when TU_s =>
-    heartbeat <= '1';
-    TU_en <= '1';
-    if TU_ready = '1' then n_state <= idle_s; end if;
-
-  end case;
+      when T_s =>
+        heartbeat <= '1';
+        if counter_finished then n_state <= TQ_s; end if;
+    end case;
   end process sm_p;
 
-c_state <= idle_s when rst_ni = '0' else 
-           n_state when rising_edge(clk_i);
+  c_state <= TQ_s when rst_ni = '0' else 
+           n_state when rising_edge(clk_i) and en_pi = '1';
 
   counter_QRS : cntdnmodm
-   generic map (n => 32, m => 5000000)
-
+   generic map (n => 16, m => 833)
     PORT MAP(clk_i   => clk_i,
              rst_ni   => rst_ni,
-             en_pi  => QRS_en,
-             count_o => open,
-             tc_o  => QRS_ready);
+             en_pi  => en_pi,
+             count_o => counter_val,
+             tc_o  => counter_finished);
 
-  counter_ST : cntdnmodm
-
-   generic map (n => 32, m => 7000000)
-
-    PORT MAP(clk_i   => clk_i,
-             rst_ni   => rst_ni,
-             en_pi  => ST_en,
-             count_o => open,
-             tc_o  => ST_ready);
-
-
-  counter_TU : cntdnmodm
-
-   generic map (n => 32, m => 8000000)
-
-    PORT MAP(clk_i   => clk_i,
-             rst_ni   => rst_ni,
-             en_pi  => TU_en,
-             count_o => open,
-             tc_o  => TU_ready);
-
+  count_o <=  counter_val;
 
 end architecture; 

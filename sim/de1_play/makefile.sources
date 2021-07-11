@@ -13,5 +13,7 @@ SYN_SOURCE_FILES = \
 ../../src/a_falling_edge_detector_fsm.vhd \
 ../../src/play_rtl.vhd \
 ../../src/count1s_rtl.vhd \
-../../src/de1_play_structure.vhd
+../../src/de1_play_structure.vhd \
+../../src/phase_gen_rtl.vhd \
+../../src/triangle_wave_gen_rtl.vhd
 

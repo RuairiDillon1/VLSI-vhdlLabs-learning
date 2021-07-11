@@ -12,4 +12,3 @@ SYN_SOURCE_FILES = \
 ../../src/de1_tone.vhd \
 ../../src/phase_gen_rtl.vhd \
 ../../src/triangle_wave_gen_rtl.vhd
-
