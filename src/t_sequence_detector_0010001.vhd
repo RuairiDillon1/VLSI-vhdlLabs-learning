@@ -33,10 +33,7 @@ architecture tbench of t_sequence_detector_0010001 is
   signal reset      : std_ulogic;
   constant period : time := 20 ns; 
   signal clken_p : boolean := True;
-  signal prescaler : std_ulogic;
 begin 
-
-  prescaler <= '1';
 
   MUV : sequence_detector
   port map(clk_i => clk_50,
@@ -46,7 +43,7 @@ begin
 
   pattern_generator : lfsr_fibonacci
   port map(clk_i => clk_50, 
-           en_pi => prescaler, 
+           en_pi => '1', 
            rst_n => reset, 
            lfsr_o => sr_val, 
            noise_o => random_sig,
@@ -66,8 +63,22 @@ begin
 
   sim_p : process
   begin 
-      wait for 262144 * period;
+      wait for 262143 * period;
       clken_p <= False;
       wait;
   end process; 
+
+  count_detections_p : process
+    variable detections : integer := 0; 
+  begin 
+    while clken_p loop
+      wait until rising_edge(clk_50); 
+      if detected = '1' then 
+        detections := detections + 1; 
+      end if; 
+    end loop; 
+    report "No.of detected 0010001 sequences: " & integer'image(detections) severity note;
+    wait; 
+  end process; 
+
 end architecture;
