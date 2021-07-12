@@ -115,7 +115,7 @@ BEGIN  -- tbench
         apply_stimuli('0', std_ulogic_vector(to_unsigned(num1, 4)), 
                           std_ulogic_vector(to_unsigned(num2, 4)));
         apply_stimuli('1', std_ulogic_vector(to_unsigned(num1, 4)), 
-                          std_ulogic_vector(to_unsigned(num2, 4))));
+                          std_ulogic_vector(to_unsigned(num2, 4)));
       end loop;
     end loop;
 
