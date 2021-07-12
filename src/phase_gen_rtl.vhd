@@ -16,7 +16,10 @@ end entity;
 architecture rtl of phase_gen is 
     signal c_val, n_val: unsigned(width-1 downto 0); 
 begin 
+    -- current value 
     c_val <= to_unsigned(0, width) when rst_n = '0' else n_val when rising_edge(clk_i) and en_p = '1';
+    -- add increment value
     n_val <= c_val + unsigned(phase_inc);
+    -- output 
     phase_o <= std_ulogic_vector(c_val); 
 end architecture;

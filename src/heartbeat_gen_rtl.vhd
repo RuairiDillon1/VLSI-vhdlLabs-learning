@@ -38,7 +38,7 @@ begin
 
   heartbeat_o <= heartbeat;  
 
-  sm_p : process(c_state, en_qrs, en_st, en_t, en_tq)
+  sm_p : process(c_state, en_qrs, en_st, en_t, en_tq, counter_val)
   begin
     n_state <= c_state;
     heartbeat <= '0';
